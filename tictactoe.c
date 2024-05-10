@@ -4,6 +4,16 @@
 #define ROWS 3
 #define COLS 3
 
+void printBoard(char board[ROWS][COLS]) {
+    printf("\n--------------\n");
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            printf(" %c | ", board[r][c]);
+        }
+        printf("\n--------------\n");
+    }
+}
+
 int* coordConverter(int c) {
     static int conv_coords[2];  // Static to preserve scope beyond func. call
 
@@ -21,6 +31,10 @@ int main() {
     // Create board
     char board[ROWS][COLS];
 
+    // Create players
+    int players[2] = {'X', 'O'};
+    int *curr_player = &players[0];  // First player is 'X'
+
     // Initialise board
 
     for (int row=0; row < ROWS; row++) {
@@ -29,14 +43,14 @@ int main() {
         }
     }
 
-    char player = 'X';
     int game_over = 0;
 
-
     while (!game_over) {
-        // Print the board
 
-        printf("Player %c, enter grid position (1-9): ", player);
+        // Print the board
+        printBoard(board);
+
+        printf("Player %c, enter grid position (1-9): ", *curr_player);
 
         // Accept user input
 
@@ -50,7 +64,10 @@ int main() {
             int* coords = coordConverter(chosen_square);
 
             if (board[coords[0]][coords[1]] == ' ') {
-                board[coords[0]][coords[1]] = player;
+                board[coords[0]][coords[1]] = *curr_player;
+
+                // Swap the current player using bitwise XOR operator on curr_player's index in array
+                curr_player = &players[1 ^ (curr_player - &players[0])];
             }
 
             else {
@@ -63,8 +80,6 @@ int main() {
         }
 
         // Temporary, to terminate loop
-
-        player = '1';
 
 //        game_over = 1;
 
