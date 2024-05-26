@@ -62,6 +62,23 @@ int hasWon(char board[ROWS][COLS], char player) {
         return 1;
     }
 
+    // Check trailing diagonal
+    player_won = 1;
+    int row = 0, col = COLS - 1;
+
+    while (row < ROWS && col >= 0) {
+        if (board[row][col] != player) {
+            player_won = 0;
+            break;
+        }
+        row++;
+        col--;
+    }
+
+    if (player_won) {
+        return 1;
+    }
+
     return 0;
 }
 
