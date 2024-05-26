@@ -140,8 +140,9 @@ int main() {
         // Accept user input
 
         int chosen_square;
+        char next_char;
 
-        if (scanf("%d", &chosen_square) != 1 || chosen_square < 1 || chosen_square > 9) {
+        if (scanf("%d%c", &chosen_square, &next_char) != 2 || next_char != '\n' || chosen_square < 1 || chosen_square > 9) {
             printf("Invalid location, try again\n");
             while (getchar() != '\n');  // Clear stdin input buffer to prevent unexpected behaviour
             continue;
