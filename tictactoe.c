@@ -31,6 +31,21 @@ int hasWon(char board[ROWS][COLS], char player) {
         }
     }
 
+    // Check columns
+    for (int col=0; col<COLS; col++) {
+        int player_won = 1;
+        for (int row=0; row<ROWS; row++) {
+            if (board[row][col] != player) {
+                player_won = 0;
+                break;
+            }
+        }
+
+        if (player_won) {
+            return 1;
+        }
+    }
+
     return 0;
 }
 
