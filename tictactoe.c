@@ -135,46 +135,41 @@ int main() {
 
         int chosen_square;
 
-        scanf("%d", &chosen_square);
+        if (scanf("%d", &chosen_square) != 1 || chosen_square < 1 || chosen_square > 9) {
+            printf("Invalid location, try again\n");
+            while (getchar() != "\n");  // Clear stdin input buffer to prevent unexpected behaviour
+            continue;
+        }
 
         // Validate grid position, then assign player
 
-        if (chosen_square >=1 && chosen_square <= 9) {
-            int* coords = coordConverter(chosen_square);
+        int* coords = coordConverter(chosen_square);
 
-            if (board[coords[0]][coords[1]] == ' ') {
-                board[coords[0]][coords[1]] = *curr_player;
-                game_over = hasWon(board,*curr_player);
+        if (board[coords[0]][coords[1]] == ' ') {
+            board[coords[0]][coords[1]] = *curr_player;
 
-                if (game_over) {
-                    printBoard(board);
-                    printf("Player %c has won!", *curr_player);
-                }
 
-                else if (isDraw(board)) {
-                    printBoard(board);
-                    printf("It's a draw!");
-                    game_over = 1;
-                }
+            if (hasWon(board, *curr_player)) {
+                printBoard(board);
+                printf("Player %c has won!", *curr_player);
+                game_over = 1;
+            }
 
-                else {
-                    // Swap the current player using bitwise XOR operator on curr_player's index in array
-                    curr_player = &players[1 ^ (curr_player - &players[0])];
-                }
+            else if (isDraw(board)) {
+                printBoard(board);
+                printf("It's a draw!");
+                game_over = 1;
             }
 
             else {
-                printf("Square is occupied, try again\n");
+                // Swap the current player using bitwise XOR operator on curr_player's index in array
+                curr_player = &players[1 ^ (curr_player - &players[0])];
             }
         }
 
         else {
-            printf("Invalid location, try again\n");
+            printf("Square is occupied, try again\n");
         }
-
-        // Temporary, to terminate loop
-
-//        game_over = 1;
 
     }
 
