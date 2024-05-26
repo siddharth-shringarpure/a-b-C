@@ -137,7 +137,7 @@ int main() {
 
         if (scanf("%d", &chosen_square) != 1 || chosen_square < 1 || chosen_square > 9) {
             printf("Invalid location, try again\n");
-            while (getchar() != "\n");  // Clear stdin input buffer to prevent unexpected behaviour
+            while (getchar() != '\n');  // Clear stdin input buffer to prevent unexpected behaviour
             continue;
         }
 
