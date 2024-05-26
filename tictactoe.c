@@ -82,6 +82,17 @@ int hasWon(char board[ROWS][COLS], char player) {
     return 0;
 }
 
+int isDraw(char board[ROWS][COLS]) {
+    for (int row = 0; row < ROWS; row++) {
+        for (int col = 0; col < COLS; col++) {
+            if (board[row][col] == ' ') {
+                return 0;
+            }
+        }
+    }
+    return 1;  // Only a draw if the entire grid is filled
+}
+
 int* coordConverter(int c) {
     static int conv_coords[2];  // Static to preserve scope beyond func. call
 
@@ -138,6 +149,12 @@ int main() {
                 if (game_over) {
                     printBoard(board);
                     printf("Player %c has won!", *curr_player);
+                }
+
+                else if (isDraw(board)) {
+                    printBoard(board);
+                    printf("It's a draw!");
+                    game_over = 1;
                 }
 
                 else {
