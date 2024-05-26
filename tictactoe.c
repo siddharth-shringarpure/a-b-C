@@ -14,6 +14,26 @@ void printBoard(char board[ROWS][COLS]) {
     }
 }
 
+int hasWon(char board[ROWS][COLS], char player) {
+
+    // Check rows
+    for (int row=0; row<ROWS; row++) {
+        int player_won = 1;
+        for (int col=0; col<COLS; col++) {
+            if (board[row][col] != player) {
+                player_won = 0;
+                break;
+            }
+        }
+
+        if (player_won) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 int* coordConverter(int c) {
     static int conv_coords[2];  // Static to preserve scope beyond func. call
 
@@ -65,9 +85,17 @@ int main() {
 
             if (board[coords[0]][coords[1]] == ' ') {
                 board[coords[0]][coords[1]] = *curr_player;
+                game_over = hasWon(board,*curr_player);
 
-                // Swap the current player using bitwise XOR operator on curr_player's index in array
-                curr_player = &players[1 ^ (curr_player - &players[0])];
+                if (game_over) {
+                    printBoard(board);
+                    printf("Player %c has won!", *curr_player);
+                }
+
+                else {
+                    // Swap the current player using bitwise XOR operator on curr_player's index in array
+                    curr_player = &players[1 ^ (curr_player - &players[0])];
+                }
             }
 
             else {
