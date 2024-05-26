@@ -122,6 +122,12 @@ int main() {
         }
     }
 
+    printf("Welcome to tic-tac-toe!\n");
+    printf("Players take turns entering a grid position (1-9) to place their mark.\n");
+    printf("eg: position 6 will place a mark in the last cell of the second row.\n");
+    printf("First player to get 3 in a row, column, or diagonal wins!\n");
+
+
     int game_over = 0;
 
     while (!game_over) {
@@ -151,13 +157,13 @@ int main() {
 
             if (hasWon(board, *curr_player)) {
                 printBoard(board);
-                printf("Player %c has won!", *curr_player);
+                printf("Player %c won!\n", *curr_player);
                 game_over = 1;
             }
 
             else if (isDraw(board)) {
                 printBoard(board);
-                printf("It's a draw!");
+                printf("It's a draw!\n");
                 game_over = 1;
             }
 
