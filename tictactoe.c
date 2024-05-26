@@ -16,9 +16,11 @@ void printBoard(char board[ROWS][COLS]) {
 
 int hasWon(char board[ROWS][COLS], char player) {
 
+    int player_won = 1;
+
     // Check rows
     for (int row=0; row<ROWS; row++) {
-        int player_won = 1;
+        player_won = 1;
         for (int col=0; col<COLS; col++) {
             if (board[row][col] != player) {
                 player_won = 0;
@@ -33,7 +35,7 @@ int hasWon(char board[ROWS][COLS], char player) {
 
     // Check columns
     for (int col=0; col<COLS; col++) {
-        int player_won = 1;
+        player_won = 1;
         for (int row=0; row<ROWS; row++) {
             if (board[row][col] != player) {
                 player_won = 0;
@@ -44,6 +46,20 @@ int hasWon(char board[ROWS][COLS], char player) {
         if (player_won) {
             return 1;
         }
+    }
+
+    // Check leading diagonal
+    for (int i=0; i<ROWS; i++) {
+        player_won = 1;
+
+        if (board[i][i] != player) {
+            player_won = 0;
+            break;
+        }
+    }
+
+    if (player_won) {
+        return 1;
     }
 
     return 0;
