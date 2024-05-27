@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 // Define constants
 
 #define ROWS 3
@@ -16,7 +17,7 @@ void printBoard(char board[ROWS][COLS]) {
 
 int hasWon(char board[ROWS][COLS], char player) {
 
-    int player_won = 1;
+    int player_won;
 
     // Check rows
     for (int row=0; row<ROWS; row++) {
@@ -138,23 +139,25 @@ int main() {
         printf("Player %c, enter grid position (1-9): ", *curr_player);
 
         // Accept user input
+        char squareInput[2];  // Only single digit input should be accepted
+        int chosen_square;  // Stores valid grid positions
 
-        int chosen_square;
-        char next_char;
+        fgets(squareInput, sizeof(squareInput), stdin);
+        while (getchar() != '\n');  // Clear stdin input buffer to prevent unexpected behaviour
 
-        if (scanf("%d%c", &chosen_square, &next_char) != 2 || next_char != '\n' || chosen_square < 1 || chosen_square > 9) {
+        // Validate grid position
+        if (*squareInput <'1' || *squareInput > '9') {
             printf("Invalid location, try again\n");
-            while (getchar() != '\n');  // Clear stdin input buffer to prevent unexpected behaviour
             continue;
         }
 
-        // Validate grid position, then assign player
+        chosen_square = atoi(squareInput);
+
 
         int* coords = coordConverter(chosen_square);
 
         if (board[coords[0]][coords[1]] == ' ') {
             board[coords[0]][coords[1]] = *curr_player;
-
 
             if (hasWon(board, *curr_player)) {
                 printBoard(board);
@@ -181,5 +184,4 @@ int main() {
     }
 
     return 0;
-
 }
