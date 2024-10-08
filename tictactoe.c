@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 // Define constants
 
 #define ROWS 3
@@ -20,9 +21,9 @@ int hasWon(char board[ROWS][COLS], char player) {
     int player_won;
 
     // Check rows
-    for (int row=0; row<ROWS; row++) {
+    for (int row = 0; row < ROWS; row++) {
         player_won = 1;
-        for (int col=0; col<COLS; col++) {
+        for (int col = 0; col < COLS; col++) {
             if (board[row][col] != player) {
                 player_won = 0;
                 break;
@@ -35,9 +36,9 @@ int hasWon(char board[ROWS][COLS], char player) {
     }
 
     // Check columns
-    for (int col=0; col<COLS; col++) {
+    for (int col = 0; col < COLS; col++) {
         player_won = 1;
-        for (int row=0; row<ROWS; row++) {
+        for (int row = 0; row < ROWS; row++) {
             if (board[row][col] != player) {
                 player_won = 0;
                 break;
@@ -50,7 +51,7 @@ int hasWon(char board[ROWS][COLS], char player) {
     }
 
     // Check leading diagonal
-    for (int i=0; i<ROWS; i++) {
+    for (int i = 0; i < ROWS; i++) {
         player_won = 1;
 
         if (board[i][i] != player) {
@@ -94,7 +95,7 @@ int isDraw(char board[ROWS][COLS]) {
     return 1;  // Only a draw if the entire grid is filled
 }
 
-int* coordConverter(int c) {
+int *coordConverter(int c) {
     static int conv_coords[2];  // Static to preserve scope beyond func. call
 
     // Convert single coordinate [1,9] into a pair of coordinates to represent row/col
@@ -117,8 +118,8 @@ int main() {
 
     // Initialise board
 
-    for (int row=0; row < ROWS; row++) {
-        for (int col=0; col < COLS; col++) {
+    for (int row = 0; row < ROWS; row++) {
+        for (int col = 0; col < COLS; col++) {
             board[row][col] = ' ';
         }
     }
@@ -139,22 +140,27 @@ int main() {
         printf("Player %c, enter grid position (1-9): ", *curr_player);
 
         // Accept user input
-        char squareInput[2];  // Only single digit input should be accepted
+        char squareInput[3];  // Only store a single digit, and null terminator
         int chosen_square;  // Stores valid grid positions
 
-        fgets(squareInput, sizeof(squareInput), stdin);
-        while (getchar() != '\n');  // Clear stdin input buffer to prevent unexpected behaviour
+        if (fgets(squareInput, sizeof(squareInput), stdin) == NULL) {
+            printf("Input error occurred.\n");
+            continue;
+        }
+
+        // Remove newline if present
+        squareInput[strcspn(squareInput, "\n")] = 0;
 
         // Validate grid position
-        if (*squareInput <'1' || *squareInput > '9') {
-            printf("Invalid location, try again\n");
+        if (strlen(squareInput) != 1 || *squareInput < '1' || *squareInput > '9') {
+            printf("Invalid location, try again with a valid single-digit location\n");
             continue;
         }
 
         chosen_square = atoi(squareInput);
 
 
-        int* coords = coordConverter(chosen_square);
+        int *coords = coordConverter(chosen_square);
 
         if (board[coords[0]][coords[1]] == ' ') {
             board[coords[0]][coords[1]] = *curr_player;
@@ -163,21 +169,15 @@ int main() {
                 printBoard(board);
                 printf("Player %c won!\n", *curr_player);
                 game_over = 1;
-            }
-
-            else if (isDraw(board)) {
+            } else if (isDraw(board)) {
                 printBoard(board);
                 printf("It's a draw!\n");
                 game_over = 1;
-            }
-
-            else {
+            } else {
                 // Swap the current player using bitwise XOR operator on curr_player's index in array
                 curr_player = &players[1 ^ (curr_player - &players[0])];
             }
-        }
-
-        else {
+        } else {
             printf("Square is occupied, try again\n");
         }
 
